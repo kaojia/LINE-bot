@@ -1,6 +1,7 @@
 name: Keep Render Alive
 
 on:
+  workflow_dispatch:    # 👈 加這行允許手動執行
   schedule:
     - cron: "*/5 * * * *"   # 每5分鐘執行一次
 jobs:
