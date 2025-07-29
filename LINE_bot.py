@@ -21,7 +21,7 @@ OPENAI_KEY = os.getenv("OPENAI_API_KEY")
 # 初始化
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
-
+client = OpenAI(api_key=OPENAI_KEY)
 
 # ✅ 快取與 FAQ
 cache = {}
