@@ -60,9 +60,10 @@ def is_business_related_gpt(user_message):
 
 # ✅ GPT 回覆函式
 def get_gpt_reply(user_message):
+    
     # 1️⃣ FAQ 完全匹配
-    if user_message.strip() in FAQ_RESPONSES:
-        return FAQ_RESPONSES[user_message.strip()]
+    if user_message.strip().lower() in FAQ_RESPONSES:
+        return FAQ_RESPONSES[user_message.strip().lower()]
 
     # 2️⃣ GPT 判斷業務性
     if not is_business_related_gpt(user_message):
