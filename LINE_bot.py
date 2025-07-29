@@ -26,8 +26,14 @@ client = OpenAI(api_key=OPENAI_KEY)
 # ✅ 快取與 FAQ
 cache = {}
 FAQ_RESPONSES = {
+    # 中文
     "你好": "你好！我是Jenny 的 AI 助理，關於亞馬遜的問題歡迎詢問～",
-    "幫助": "需要幫助嗎？請輸入：功能 / 教學 / 聯絡客服"
+    "幫助": "需要幫助嗎？請輸入：功能 / 教學 / 聯絡客服",
+
+    # 英文
+    "hello": "Hello! I'm Jenny's AI assistant. Feel free to ask anything about Amazon seller business.",
+    "hi": "Hi there! I'm Jenny's AI assistant. You can ask me anything about Amazon seller topics.",
+    "help": "Need help? You can type: features / tutorial / contact support."
 }
 
 # ✅ 語言檢測（英文比例 >50% → 英文）
