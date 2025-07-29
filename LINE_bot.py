@@ -20,6 +20,8 @@ OPENAI_KEY = os.getenv("OPENAI_API_KEY")
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
+# ✅ 初始化 OpenAI Client（必須有這行）
+client = OpenAI(api_key=OPENAI_KEY)
 
 # 🔹 ChatGPT 回覆函式
 def get_chatgpt_response(user_message):
