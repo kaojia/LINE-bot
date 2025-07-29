@@ -128,6 +128,7 @@ def callback():
 # ✅ Keep-Alive Endpoint
 @app.route("/ping", methods=['GET'])
 def ping():
+    print("✅ /ping 被呼叫")  # Debug log
     return "OK", 200
 
 # 🔹 LINE 訊息處理
