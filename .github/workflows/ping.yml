@@ -8,4 +8,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Ping Render URL
-        run: curl -s https://line-bot-7alv.onrender.com/ > /dev/null
+        run: curl -s https://line-bot-7alv.onrender.com/ping > /dev/null
