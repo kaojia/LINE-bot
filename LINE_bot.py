@@ -125,6 +125,11 @@ def callback():
         abort(400)
     return 'OK'
 
+# ✅ Keep-Alive Endpoint
+@app.route("/ping", methods=['GET'])
+def ping():
+    return "OK", 200
+
 # 🔹 LINE 訊息處理
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
