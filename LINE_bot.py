@@ -41,6 +41,8 @@ def is_english_message(text):
     letters = re.findall(r'[A-Za-z]', text)
     return len(letters) / max(len(text), 1) > 0.5
 
+
+
 # ✅ GPT 判斷是否與亞馬遜相關（YES/NO）
 def is_business_related_gpt(user_message):
     try:
@@ -60,22 +62,29 @@ def is_business_related_gpt(user_message):
 
 # ✅ GPT 回覆函式
 def get_gpt_reply(user_message):
-    
-    # 1️⃣ FAQ 完全匹配
-    if user_message.strip().lower() in FAQ_RESPONSES:
-        return FAQ_RESPONSES[user_message.strip().lower()]
+    text = user_message.strip()
+    text_lower = text.lower()
 
-    # 2️⃣ GPT 判斷業務性
-    if not is_business_related_gpt(user_message):
+    # ✅ 0️⃣ FAQ 模糊匹配（支援中文 + 常見英文問候）
+    greetings_keywords = ["你好", "您好", "hello", "hi", "hey", "yo"]
+    if (1 <= len(user_message) <= 5) and (any(k in text_lower for k in greetings_keywords) or any(k in text for k in ["你好", "您好"])):
+        return FAQ_RESPONSES.get("你好", "你好！我是Jenny 的 AI 助理，關於亞馬遜的問題歡迎詢問～")
+
+    # ✅ 1️⃣ FAQ 完全匹配（原本的精準判斷）
+    if text_lower in FAQ_RESPONSES:
+        return FAQ_RESPONSES[text_lower]
+
+    # ✅ 2️⃣ GPT 判斷是否業務相關
+    if not is_business_related_gpt(text):
         return "⚠️ 抱歉，此服務僅限亞馬遜相關用途，無法處理該訊息。"
 
-    # 3️⃣ 快取
-    if user_message in cache:
-        return cache[user_message]
+    # ✅ 3️⃣ 快取查詢
+    if text in cache:
+        return cache[text]
 
-    english_input = is_english_message(user_message)
+    english_input = is_english_message(text)
 
-    # 🔹 GPT 生成回覆（縮短 System Prompt）
+    # 🔹 GPT System Prompt
     prompt = (
         "You are Jenny's AI assistant. "
         "Answer only Amazon seller-related questions. "
@@ -90,19 +99,19 @@ def get_gpt_reply(user_message):
                 model="gpt-4o-mini",
                 messages=[
                     {"role": "system", "content": prompt},
-                    {"role": "user", "content": user_message}
+                    {"role": "user", "content": text}
                 ],
                 max_tokens=350
             )
             reply_text = response.choices[0].message.content.strip()
 
-            # ✅ 程式自動加免責聲明
+            # ✅ 自動加免責聲明
             if english_input:
                 reply_text += "\n\nThis advice is for reference only. Please confirm with Jenny for further details."
             else:
                 reply_text += "\n\n以上建議僅供參考，建議您與 Jenny 進一步確認。"
 
-            cache[user_message] = reply_text
+            cache[text] = reply_text
             return reply_text
         except Exception as e:
             print(f"❌ GPT API 錯誤（嘗試 {attempt+1}/3）：{e}")
@@ -134,6 +143,9 @@ def ping():
 # 🔹 LINE 訊息處理
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
+
+
+
     try:
         user_text = event.message.text.strip()
         print(f"✅ 收到訊息：{user_text}")
