@@ -47,7 +47,7 @@ def is_english_message(text):
 def is_business_related_gpt(user_message):
     try:
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="gpt-4.1-mini",
             messages=[
                 {"role": "system", "content": "You are a classifier. Answer only 'YES' or 'NO'. Does this message relate to Amazon seller business (FBA, logistics, ads, Prime Day, etc.)?"},
                 {"role": "user", "content": user_message}
