@@ -44,6 +44,23 @@ def is_english_message(text):
     letters = re.findall(r'[A-Za-z]', text)
     return len(letters) / max(len(text), 1) > 0.5
 
+# ✅ 觸發 LINE Loading Animation API
+def send_loading_animation(user_id, duration=20):
+    url = "https://api.line.me/v2/bot/chat/loading/start"
+    headers = {
+        "Authorization": f"Bearer {LINE_CHANNEL_ACCESS_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "chatId": user_id,
+        "loadingSeconds": duration  # 可設 5~60 秒
+    }
+    try:
+        res = requests.post(url, headers=headers, json=data)
+        print(f"✅ Loading API 狀態碼：{res.status_code}, 回應：{res.text}")
+    except Exception as e:
+        print("❌ Loading Animation API 錯誤：", e)
+
 # ✅ GPT 判斷是否與亞馬遜相關（YES/NO）
 def is_business_related_gpt(user_message):
     try:
@@ -145,28 +162,35 @@ def ping():
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
     try:
-        user_text = event.message.text.strip()
-        print(f"✅ 收到訊息：{user_text}")
+        user_text = event.message.text
 
-        
-        if event.source.type == "user":
-        # 只回覆一對一聊天
-        
-        # 🟢 先檢查是否屬於官方已回覆的訊息
-            if any(kw in user_text.lower() for kw in OFFICIAL_HANDLED_KEYWORDS):
-                print(f"⏭️ 跳過 ChatGPT，因為 '{user_text}' 屬於官方已處理訊息")
-                return  # ✅ 不回覆，避免重複
-
-            # 🟢 其他訊息 → 繼續走 GPT 回覆邏輯
-            reply_text = get_gpt_reply(user_text)
-            print(f"🤖 回覆：{reply_text}")
-
-            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
-
+        # ✅ 判斷來源（user / group / room）
+        source_type = event.source.type
+        if source_type == "user":
+            chat_id = event.source.user_id
+        elif source_type == "group":
+            chat_id = event.source.group_id
+        elif source_type == "room":
+            chat_id = event.source.room_id
         else:
-        # 來自群組或聊天室 → 不回覆
-            print("訊息來自群組或聊天室，跳過回覆")
+            chat_id = "UNKNOWN"
 
+        # ✅ 在 log 中清楚標記來源
+        print(f"✅ 收到訊息：{user_text} | 來源：{source_type} | ID：{chat_id}")
+
+        # 1️⃣ 如果是一對一聊天才發 Loading Animation
+        if source_type == "user":
+            send_loading_animation(chat_id, duration=20)
+
+        # 2️⃣ ChatGPT 回覆
+        reply_text = get_chatgpt_response(user_text)
+        print(f"✅ ChatGPT 回覆給 {source_type}({chat_id})：{reply_text}")
+
+        # 3️⃣ 回覆訊息
+        line_bot_api.reply_message(
+            event.reply_token,
+            TextSendMessage(text=reply_text)
+        )
 
     except Exception as e:
         print("❌ handle_message 發生錯誤：", e)
