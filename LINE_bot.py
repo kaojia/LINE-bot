@@ -189,7 +189,7 @@ def handle_message(event):
 
             # 🟢 其他訊息 → # 2️⃣ ChatGPT 回覆
             reply_text = get_gpt_reply(user_text)
-            print(f"✅ ChatGPT 回覆給 {source_type}({chat_id})：{reply_text}"
+            print(f"✅ ChatGPT 回覆給 {source_type}({chat_id})：{reply_text}")
 
             line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
 
