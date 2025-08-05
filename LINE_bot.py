@@ -182,16 +182,20 @@ def handle_message(event):
         # 1️⃣ 如果是一對一聊天才發 Loading Animation
         if source_type == "user":
             send_loading_animation(chat_id, duration=20)
+            # 🟢 先檢查是否屬於官方已回覆的訊息
+            if any(kw in user_text.lower() for kw in OFFICIAL_HANDLED_KEYWORDS):
+                print(f"⏭️ 跳過 ChatGPT，因為 '{user_text}' 屬於官方已處理訊息")
+                return  # ✅ 不回覆，避免重複
 
-        # 2️⃣ ChatGPT 回覆
-        reply_text = get_gpt_reply(user_text)
-        print(f"✅ ChatGPT 回覆給 {source_type}({chat_id})：{reply_text}")
+            # 🟢 其他訊息 → # 2️⃣ ChatGPT 回覆
+            reply_text = get_gpt_reply(user_text)
+            print(f"✅ ChatGPT 回覆給 {source_type}({chat_id})：{reply_text}"
 
-        # 3️⃣ 回覆訊息
-        line_bot_api.reply_message(
-            event.reply_token,
-            TextSendMessage(text=reply_text)
-        )
+            line_bot_api.reply_message(event.reply_token, TextSendMessage(text=reply_text))
+
+        else:
+        # 來自群組或聊天室 → 不回覆
+            print("訊息來自群組或聊天室，跳過回覆")
 
     except Exception as e:
         print("❌ handle_message 發生錯誤：", e)
