@@ -7,6 +7,7 @@ from dotenv import load_dotenv
 import os
 import re
 from difflib import SequenceMatcher
+import requests
 
 # 🔹 載入環境變數
 load_dotenv()
@@ -183,7 +184,7 @@ def handle_message(event):
             send_loading_animation(chat_id, duration=20)
 
         # 2️⃣ ChatGPT 回覆
-        reply_text = get_chatgpt_response(user_text)
+        reply_text = get_gpt_reply(user_text)
         print(f"✅ ChatGPT 回覆給 {source_type}({chat_id})：{reply_text}")
 
         # 3️⃣ 回覆訊息
