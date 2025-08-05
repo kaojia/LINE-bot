@@ -38,7 +38,7 @@ FAQ_RESPONSES = {
 }
 
 # ✅ 官方帳號已回覆的關鍵字（不需要 ChatGPT 再回覆）
-OFFICIAL_HANDLED_KEYWORDS = ["wifi", "預約諮詢", "提報促銷", "新賣家大禮包"]
+OFFICIAL_HANDLED_KEYWORDS = ["wifi", "預約諮詢", "提報促銷", "新賣家大禮包","【亞馬遜英語市場官方說明會】"]
 
 # ✅ 語言檢測（英文比例 >50% → 英文）
 def is_english_message(text):
