@@ -29,6 +29,20 @@ handler = WebhookHandler(LINE_CHANNEL_SECRET)
 client = OpenAI(api_key=OPENAI_KEY)
 BOT_TRIGGER="@bot"
 
+# ✅ 新增：改為從環境變數讀取
+# 我們稍後會在 Render 設定一個叫做 'GOOGLE_SHEETS_KEY' 的變數
+key_json_str = os.getenv("GOOGLE_SHEETS_KEY")
+
+# 這裡做個防呆，如果讀不到變數 (例如在 local 沒設定)，就報錯或給提示
+if key_json_str is None:
+    print("⚠️ 警告：找不到 GOOGLE_SHEETS_KEY 環境變數")
+    # 如果你在本機也想跑，可以在這裡寫 fallback 邏輯讀取本地檔案
+    # 但部署時建議走環境變數
+    CREDS_DICT = {} 
+else:
+    # 將 JSON 字串轉換回 Python 字典
+    CREDS_DICT = json.loads(key_json_str)
+
 # ✅ 快取與 FAQ
 cache = {}
 FAQ_RESPONSES = {
