@@ -3,3 +3,5 @@ line-bot-sdk
 python-dotenv
 gunicorn
 openai
+gspread
+oauth2client
