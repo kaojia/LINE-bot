@@ -22,6 +22,8 @@ app = Flask(__name__)
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
 LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET")
 OPENAI_KEY = os.getenv("OPENAI_API_KEY")
+key_json_str = os.getenv("GOOGLE_SHEETS_KEY")
+credentials_dict = json.loads(key_json_str)
 
 # 初始化
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
@@ -62,7 +64,7 @@ OFFICIAL_HANDLED_KEYWORDS = ["wifi", "預約諮詢", "提報促銷", "新賣家�
 
 # ✅ Google Sheets 設定
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-CREDS = ServiceAccountCredentials.from_json_keyfile_dict(CREDENTIALS_DICT, SCOPE)
+CREDS = ServiceAccountCredentials.from_json_keyfile_dict(credentials_dict, SCOPE)
 GCLIENT = gspread.authorize(CREDS)
 
 # 設定試算表名稱與工作表名稱
