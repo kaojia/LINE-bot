@@ -5,3 +5,4 @@ gunicorn
 openai
 gspread
 oauth2client
+python-dotenv
