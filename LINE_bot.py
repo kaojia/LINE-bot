@@ -11,7 +11,7 @@ from difflib import SequenceMatcher
 import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 import time
-
+from dotenv import load_dotenv 
 
 # 🔹 載入環境變數
 load_dotenv()
@@ -68,6 +68,22 @@ GCLIENT = gspread.authorize(CREDS)
 # 設定試算表名稱與工作表名稱
 SHEET_NAME = "AI_Assistant_Config"  # 請改為你的試算表名稱
 WORKSHEET_NAME = "Prompt"      # 請改為你的工作表名稱
+
+def send_loading_animation(user_id, duration=20):
+    url = "https://api.line.me/v2/bot/chat/loading/start"
+    headers = {
+        "Authorization": f"Bearer {LINE_CHANNEL_ACCESS_TOKEN}",
+        "Content-Type": "application/json"
+    }
+    data = {
+        "chatId": user_id,
+        "loadingSeconds": duration
+    }
+    try:
+        requests.post(url, headers=headers, json=data)
+    except Exception as e:
+        print("❌ Loading Animation API 錯誤：", e)
+
 
 def get_prompt_from_sheet(mode_name="default"): 
 
