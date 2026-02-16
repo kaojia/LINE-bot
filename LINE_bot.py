@@ -60,7 +60,7 @@ FAQ_RESPONSES = {
 
 
 # ✅ 官方帳號已回覆的關鍵字（不需要 ChatGPT 再回覆）
-OFFICIAL_HANDLED_KEYWORDS = ["wifi", "預約諮詢", "提報促銷", "新賣家大禮包","全球跟賣","註冊文件","品牌授權","倉庫位置","促銷提報","出貨注意事項","發票","佣金"]
+OFFICIAL_HANDLED_KEYWORDS = ["wifi", "預約諮詢", "提報促銷", "新賣家大禮包","全球跟賣","註冊文件","品牌授權","倉庫位置","促銷提報","出貨注意事項","發票","佣金","關鍵字目錄","助手指令"]
 
 # ✅ Google Sheets 設定
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
