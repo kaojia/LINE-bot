@@ -71,7 +71,7 @@ GCLIENT = gspread.authorize(CREDS)
 SHEET_NAME = "AI_Assistant_Config"  # 請改為你的試算表名稱
 WORKSHEET_NAME = "Prompt"      # 請改為你的工作表名稱
 
-def send_loading_animation(user_id, duration=20):
+def send_loading_animation(user_id, duration=10):
     url = "https://api.line.me/v2/bot/chat/loading/start"
     headers = {
         "Authorization": f"Bearer {LINE_CHANNEL_ACCESS_TOKEN}",
