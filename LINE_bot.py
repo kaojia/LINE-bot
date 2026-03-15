@@ -60,7 +60,7 @@ FAQ_RESPONSES = {
 
 
 # ✅ 官方帳號已回覆的關鍵字（不需要 ChatGPT 再回覆）
-OFFICIAL_HANDLED_KEYWORDS = ["wifi", "預約諮詢", "提報促銷", "新賣家大禮包","全球跟賣","註冊文件","品牌授權","倉庫位置","促銷提報","出貨注意事項","發票","佣金","關鍵字目錄","助手指令"]
+OFFICIAL_HANDLED_KEYWORDS = ["wifi", "預約諮詢", "促銷提報", "新賣家大禮包","全球跟賣","註冊文件","品牌授權","倉庫位置","促銷提報","出貨注意事項","發票","佣金","歡迎","品牌註冊"]
 
 # ✅ Google Sheets 設定
 SCOPE = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
@@ -106,9 +106,6 @@ def get_prompt_from_sheet(mode_name="default"):
     except Exception as e:
         print(f"❌ 讀取 Google Sheet 失敗: {e}")
         return "You are a helpful AI assistant."
-
-# ✅ 官方帳號已回覆的關鍵字（不需要 ChatGPT 再回覆）
-OFFICIAL_HANDLED_KEYWORDS = ["wifi", "預約諮詢", "提報促銷", "新賣家大禮包"]
 
 # ✅ 語言檢測（英文比例 >50% → 英文）
 def is_english_message(text):
